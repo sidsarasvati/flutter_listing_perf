@@ -1,6 +1,5 @@
 # flutter_listing_perf
-
-A new Flutter project.
+Flutter App with Google Maps
 
 ## Getting Started
 
