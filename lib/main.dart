@@ -14,7 +14,19 @@ class App extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MapListing(),
+      home: HomePage(),
+    );
+  }
+}
+
+class HomePage extends StatelessWidget {
+  // Location Prompts
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Dynamic Map Listing'),
+      ),
+      body: MapListing(),
     );
   }
 }
@@ -25,7 +37,7 @@ class MapListing extends StatefulWidget {
 
 class MapListingState extends State<MapListing> {
   Completer<GoogleMapController> _controller = Completer();
-  // TODO - get GPS position
+  // get GPS position
   static const LatLng _center = const LatLng(45.521563, -122.677433);
 
   void _onMapCreated(GoogleMapController controller) {
@@ -34,17 +46,29 @@ class MapListingState extends State<MapListing> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Dynamic Map Listing'),
-      ),
-      body: GoogleMap(
-        onMapCreated: _onMapCreated,
-        initialCameraPosition: CameraPosition(
-          target: _center,
-          zoom: 11.0
+    return Stack(
+      children: <Widget>[
+        GoogleMap(
+          onMapCreated: _onMapCreated,
+          initialCameraPosition: CameraPosition(target: _center, zoom: 11.0),
+          myLocationEnabled: true,
+          scrollGesturesEnabled: true,
+          zoomGesturesEnabled: true,
+          compassEnabled: true,
         ),
-      ),
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Align(
+            alignment: Alignment.topRight,
+            child: FloatingActionButton(
+              onPressed: () => print('button pressed'),
+              materialTapTargetSize: MaterialTapTargetSize.padded,
+              backgroundColor: Colors.green,
+              child: const Icon(Icons.map, size: 36.0),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
